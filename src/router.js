@@ -6,7 +6,11 @@ Vue.use(VueRouter)
 import HomePage from './pages/HomePage'
 import BlogDetail from './pages/BlogDetail'
 import Contact from './pages/Contact'
+import Login from './pages/Login'
 import AboutUs from './pages/AboutUs'
+import NotFound from './pages/NotFound'
+
+import store from './store/index'
 
 const routes = [
 	{ 
@@ -27,7 +31,24 @@ const routes = [
 	{ 
 		path: '/blog-detail/:title-:id',
 		name: 'blog-detail',
-		component: BlogDetail 
+		component: BlogDetail,
+		beforeEnter: (to, from, next) => {
+			if (store.state.isLogin) {
+				next();
+			} else {
+				next({ path: '/login' });
+			}
+		} 
+	},
+	{ 
+		path: '/login',
+		name: 'login',
+		component: Login 
+	},
+	{ 
+		path: '*',
+		name: 'not-found',
+		component: NotFound 
 	}
 ]
 
